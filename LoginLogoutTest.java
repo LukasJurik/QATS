@@ -1,3 +1,4 @@
+import io.appium.java_client.remote.MobileCapabilityType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -5,34 +6,42 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class LoginLogoutTest {
     private AppiumDriver<MobileElement> driver;
     private String username;
     private String password;
-    String appiumServerUrl = "http://0.0.0.0:4723/wd/hub";
+    String appiumServerUrl = "http://127.0.0.0:4723/wd/hub";
 
 
     @BeforeClass
-    public void setUp() {
-        // Set up desired capabilities for the Android device and the Google Play Store app
-        DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability("deviceName", "your_device_name");
-        caps.setCapability("platformName", "Android");
-        caps.setCapability("appPackage", "com.android.vending");
-        caps.setCapability("appActivity", "com.android.vending.AssetBrowserActivity");
+        public void setup() throws MalformedURLException {
+            DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+            desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
+            desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Device_Name");
+            desiredCapabilities.setCapability(MobileCapabilityType.APP, "loginAppForTesting.apk");
 
         try {
             // Initialize the driver with the Appium server URL and desired capabilities
-            driver = new AndroidDriver<>(new URL(appiumServerUrl), caps);
+            driver = new AndroidDriver<>(new URL(appiumServerUrl), desiredCapabilities);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Set the username and password
-        username = "your_username";
-        password = "your_password";
+        // Set the username
+        username = "system";
+
+        // Generate and set the password dynamically from screen
+        password = getOTPFromScreen();
+    }
+
+    private String getOTPFromScreen() {
+        MobileElement otpElement = driver.findElementById("appPackage:id/otpTextView");
+        // Get the OTP value
+        String otpValue = otpElement.getText();
+        return otpValue;
     }
 
     @Test
