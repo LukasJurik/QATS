@@ -13,8 +13,7 @@ public class LoginLogoutTest {
     private AppiumDriver<MobileElement> driver;
     private String username;
     private String password;
-    String appiumServerUrl = "http://127.0.0.0:4723/wd/hub";
-
+    String appiumServerUrl = "http://127.0.0.1:4723/wd/hub";
 
     @BeforeClass
         public void setup() throws MalformedURLException {
@@ -30,10 +29,7 @@ public class LoginLogoutTest {
             e.printStackTrace();
         }
 
-        // Set the username
         username = "system";
-
-        // Generate and set the password dynamically from screen
         password = getOTPFromScreen();
     }
 
