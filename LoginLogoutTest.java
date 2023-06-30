@@ -30,7 +30,7 @@ public class LoginLogoutTest {
         }
 
         username = "system";
-        password = getOTPFromScreen();
+
     }
 
     private String getOTPFromScreen() {
@@ -42,6 +42,7 @@ public class LoginLogoutTest {
 
     @Test
     public void loginLogoutTest() {
+        password = getOTPFromScreen();
         // Login
         MobileElement usernameField = driver.findElementById("appPackage:id/usernameEditText");
         MobileElement passwordField = driver.findElementById("appPackage:id/passwordEditText");
